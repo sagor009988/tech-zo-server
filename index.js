@@ -22,9 +22,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     
-    const itemCollection = client.db("techZooDB").collection("items");
-    const brandCollection = client.db("techZooDB").collection("brand");
-    const myCartCollection = client.db("techZooDB").collection("myCart");
+    const itemCollection = client.db("techZooDB").collection("items")
+    const brandCollection = client.db("techZooDB").collection("brand")
+    const myCartCollection = client.db("techZooDB").collection("myCart")
 
     app.get("/items", async (req, res) => {
       const data = await itemCollection.find().toArray();
@@ -37,12 +37,33 @@ async function run() {
       res.send(data);
     });
 
+     app.get("/items/:id", async (req, res) => {
+       try {
+         const id = req.params.id;
+         const query = {
+           _id: new ObjectId(id),
+         };
+         const result = await itemCollection.findOne(query);
+         console.log(result);
+         if (!result) {
+           res.status(404).send("Item not found");
+           return;
+         }
+         res.send(result);
+       } catch {
+         console.error("Error:", error);
+         res.status(500).send("Internal Server Error");
+       }
+     });
+
     
+    // post 
     app.post("/items", async (req, res) => {
       const data = req.body;
       const post = await itemCollection.insertOne(data);
       res.send(post);
     });
+
 
     app.get("/items/:id", async (req, res) => {
       try {
