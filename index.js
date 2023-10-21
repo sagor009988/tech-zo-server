@@ -17,12 +17,11 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-});
+})
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+    
     const itemCollection = client.db("techZooDB").collection("items");
     const brandCollection = client.db("techZooDB").collection("brand");
     const myCartCollection = client.db("techZooDB").collection("myCart");
@@ -32,11 +31,13 @@ async function run() {
       res.send(data);
     });
 
+    // get 
     app.get("/brand", async (req, res) => {
       const data = await brandCollection.find().toArray();
       res.send(data);
     });
 
+    
     app.post("/items", async (req, res) => {
       const data = req.body;
       const post = await itemCollection.insertOne(data);
