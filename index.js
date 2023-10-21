@@ -10,7 +10,7 @@ app.use(cors());
 
 const uri = `mongodb+srv://${process.env.USER_DB}:${process.env.USER_PASSWORD}@cluster0.abaz9hk.mongodb.net/?retryWrites=true&w=majority`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -60,7 +60,7 @@ async function run() {
         console.error("Error:", error);
         res.status(500).send("Internal Server Error");
       }
-    });
+    })
 
     app.put("/items/:id", async (req, res) => {
       const id = req.params.id;
